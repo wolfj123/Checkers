@@ -1,0 +1,33 @@
+@startuml
+' syntax: 
+' https://plantuml.com/class-diagram
+
+class Pawn 
+
+class Board 
+
+class Cell
+Cell --* Board
+
+interface Player 
+
+class HumanPlayer implements Player
+
+class AiPlayer implements Player
+
+class GameMaster
+
+Interface RuleSet
+
+class ClassicCheckers
+
+class 
+
+GameMaster --> RuleSet : "rules"
+GameMaster --> Player : "current_player"
+GameMaster --> Board : "board"
+
+Player "1" -- "*" Pawn
+Cell -- Pawn
+
+@enduml
