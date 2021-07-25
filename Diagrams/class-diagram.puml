@@ -19,9 +19,9 @@ class GameMaster
 
 Interface RuleSet
 
-class ClassicCheckers
+class ClassicCheckers implements RuleSet
 
-class 
+class PapyCheckers implements RuleSet
 
 GameMaster --> RuleSet : "rules"
 GameMaster --> Player : "current_player"
