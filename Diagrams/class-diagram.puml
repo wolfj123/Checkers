@@ -15,7 +15,24 @@ class HumanPlayer implements Player
 
 class AiPlayer implements Player
 
-class GameMaster
+
+
+interface Memento {
+
+}
+
+class Snaphot implements Memento {
+    
+    --
+    _MetaData_
+    getName()
+    getSnapshotDate()
+}
+
+class Board {
+    makeSnapshot() : Snaphot
+    restore(Snaphot)
+}
 
 Interface RuleSet
 
@@ -29,5 +46,13 @@ GameMaster --> Board : "board"
 
 Player "1" -- "*" Pawn
 Cell -- Pawn
+
+
+RuleSet --> Move : creates
+class Move {
+    DoMove(Board) : void
+    UndoMove(Board) : void
+}
+
 
 @enduml
