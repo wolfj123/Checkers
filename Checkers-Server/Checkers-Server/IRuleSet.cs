@@ -15,13 +15,4 @@ namespace Checkers_Server
 
         List<Move> GetAllMovesForPawn(IPlayer player, Board board, Pawn pawn);
     }
-
-
-    public interface IRuleWincondition
-    {
-        ///<returns>Returns Null in case of no winner</returns>
-        IPlayer Winner(List<IPlayer> players, Board board);
-    }
-
-    //public interface IRule
 }

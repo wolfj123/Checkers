@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,27 +7,67 @@ namespace Checkers_Server
 {
     public class Board
     {
-        Cell[][] cells;
+        Cell[][] cellsArray;
+        List<Cell> cellsList;
+        int size;
 
         Board(int size)
         {
-            cells = new Cell[size][];
+            this.size = size;
+            cellsArray = new Cell[size][];
             for (int x = 0; x < size; x++)
             {
-                cells[x] = new Cell[size];
+                cellsArray[x] = new Cell[size];
                 for (int y = 0; y < size; y++)
                 {
                     //Color color = (x + y) % 
-                    cells[x][y] = new Cell(x, y);
+                    cellsArray[x][y] = new Cell(x, y);
+                    cellsList.Add(cellsArray[x][y]);
                 }
             }
         }
 
         public Cell GetCell(int x, int y)
         {
-            return cells[x][y];
+            return cellsArray[x][y];
         }
 
+        public List<Cell> GetAllCells()
+        {
+            return cellsList;
+        }
+
+        public List<Pawn> GetAllPawns()
+        {
+            List<Pawn> result = cellsList.ConvertAll<Pawn>(cell => cell.GetPawn());
+            result.RemoveAll(pawn => pawn == null);
+            return result;
+
+            //List<Pawn> result = new List<Pawn>();
+            //for (int x = 0; x < size; x++)
+            //{
+            //    for (int y = 0; y < size; y++)
+            //    {
+            //        Pawn currPawn = cells[x][y].GetPawn();
+            //        if(currPawn != null)
+            //        {
+            //            result.Add(currPawn);
+            //        }
+            //    }
+            //}
+            //return result;
+        }
+
+        public List<(Cell, Pawn)> GetAllCellsAndPawns()
+        {
+            var cells = GetAllCells();
+            var result = new List<(Cell, Pawn)>();
+            cells.ForEach(delegate (Cell cell)
+            {
+                result.Add((cell, cell.GetPawn()));
+            });
+            return result;
+        }
 
         ///<returns>Returns Null in case of no Pawn</returns>
         public Pawn GetPawn(int x, int y)

@@ -24,7 +24,15 @@ namespace Checkers_Server
 
         public void SetPawn(Pawn pawn)
         {
+            //if (this.pawn != null && this.pawn.cell == this)
+            //{
+            //    pawn.cell = null;
+            //}
             this.pawn = pawn;
+            //if(this.pawn != null)
+            //{
+            //    pawn.cell = this;
+            //}
         }
     }
  

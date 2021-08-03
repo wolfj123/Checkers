@@ -74,7 +74,6 @@ namespace Checkers_Server
             this.x = x;
             this.y = y;
         }
-
         public void DoStep()
         {
             pawn = board.GetPawn(x, y);

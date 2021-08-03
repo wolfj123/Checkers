@@ -6,33 +6,34 @@ namespace Checkers_Server
 {
     public class Pawn
     {
-        Color color;
-        PawnType type;
+        //public Cell cell { get; set; }
+        public Color color { get; set; }
+        public PawnType type { get; set; }
 
         public Pawn(Color color, PawnType type)
         {
             this.color = color;
         }
 
-        public Color GetColor()
-        {
-            return color;
-        }
+        //public Color GetColor()
+        //{
+        //    return color;
+        //}
 
-        public void SetColor(Color color)
-        {
-            this.color = color;
-        }
+        //public void SetColor(Color color)
+        //{
+        //    this.color = color;
+        //}
 
-        public PawnType GetPawnType()
-        {
-            return type;
-        }
+        //public PawnType GetPawnType()
+        //{
+        //    return type;
+        //}
 
-        public void SetPawnType(PawnType type)
-        {
-            this.type = type;
-        }
+        //public void SetPawnType(PawnType type)
+        //{
+        //    this.type = type;
+        //}
     }
 
     public enum Color

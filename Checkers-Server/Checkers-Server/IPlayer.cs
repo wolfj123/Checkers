@@ -6,5 +6,6 @@ namespace Checkers_Server
 {
     public interface IPlayer
     {
+        Color GetColor();
     }
 }
