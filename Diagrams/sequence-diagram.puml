@@ -1,8 +1,28 @@
 @startuml
 ' syntax: 
-' https://plantuml.com/class-diagram
+' https://plantuml.com/sequence-diagram
 
 
+loop *
+    GameMaster --> Player : notify turn
+    Player --> GameMaster: get board & moves 
+    GameMaster --> IRuleSet : get moves
+    GameMaster <-- IRuleSet : moves
+    Player <-- GameMaster: board & moves
+    Player --> GameMaster: send move
+    GameMaster --> Board : apply move
+    loop *
+        Player --> GameMaster: get board & moves
+        GameMaster --> GameMaster : get chained moves
+        Player <-- GameMaster: board & moves
+        Player --> GameMaster: send move
+        GameMaster --> Board : apply move
+    end
+    Player --> GameMaster: get board & moves
+    Player --> GameMaster: end turn
+    GameMaster --> IRuleSet : get winners
+    GameMaster <-- IRuleSet : winners
+end
 
 
 

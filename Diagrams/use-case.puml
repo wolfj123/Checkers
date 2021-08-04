@@ -1,0 +1,19 @@
+@startuml
+' syntax: 
+' https://plantuml.com/use-case-diagram
+
+
+
+skinparam actorStyle awesome
+:Player: --> (Make a move)
+:Player: --> (Save game)
+:Player: --> (Load game)
+
+
+
+
+
+
+
+
+@enduml

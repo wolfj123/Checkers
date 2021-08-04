@@ -1,0 +1,30 @@
+@startuml
+' syntax: 
+' https://plantuml.com/sequence-diagram
+
+loop *
+    GameMaster --> Player1 : notify turn
+    loop *
+        Player1 --> GameMaster: get board & moves
+        Player1 <-- GameMaster: board & moves
+        Player1 --> GameMaster: send move
+    end
+    Player1 --> GameMaster: get board & moves
+    Player1 <-- GameMaster: board & moves (empty)
+    Player1 --> GameMaster: end turn
+
+    GameMaster --> Player2 : notify turn
+    loop *
+        Player2 --> GameMaster: get board & moves
+        Player2 <-- GameMaster: board & moves
+        Player2 --> GameMaster: send move
+    end
+    Player2 --> GameMaster: get board & moves
+    Player2 <-- GameMaster: board & moves (empty)
+    Player2 --> GameMaster: end turn
+end
+GameMaster --> Player1 : notify winner
+GameMaster --> Player2 : notify winner
+
+
+@enduml

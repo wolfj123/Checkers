@@ -9,49 +9,80 @@ class Board
 class Cell
 Cell --* Board
 
-interface Player 
+Enum Color {
+    WHITE
+    BLACK
+}
+Enum PawnType
+{
+    NORMAL
+    QUEEN
+}
 
-class HumanPlayer implements Player
+Abstract IPlayer {
+    GetColor() : Color
+}
 
-class AiPlayer implements Player
+class HumanPlayer implements IPlayer
 
+class AiPlayer implements IPlayer
 
 
 interface Memento {
-
-}
-
-class Snaphot implements Memento {
-    
     --
     _MetaData_
     getName()
     getSnapshotDate()
 }
 
+class BoardSnaphot implements Memento 
+class GameSnaphot implements Memento 
+
+class GameMaster {
+    makeSnapshot() : GameSnaphot
+    restore(GameSnaphot) : void
+    GetCurrentPlayer() : IPlayer
+}
+
 class Board {
-    makeSnapshot() : Snaphot
+    makeSnapshot() : BoardSnaphot
     restore(Snaphot)
 }
 
-Interface RuleSet
+Interface IRuleSet {
+    Winner(List<IPlayer>) : IPlayer
+    GetAllMoves(IPlayer, Board) : List<Move>
+    GetAllMovesForPawn(IPlayer, Board, Pawn) : List<Move>
+}
 
-class ClassicCheckers implements RuleSet
+class ClassicCheckers implements IRuleSet
 
-class PapyCheckers implements RuleSet
+class PapyCheckers implements IRuleSet
 
-GameMaster --> RuleSet : "rules"
-GameMaster --> Player : "current_player"
+GameMaster --> IRuleSet : "rules"
+GameMaster --> IPlayer : "current_player"
 GameMaster --> Board : "board"
 
-Player "1" -- "*" Pawn
+' IPlayer "1" -- "*" Pawn
 Cell -- Pawn
 
 
 RuleSet --> Move : creates
+
+
 class Move {
     DoMove(Board) : void
     UndoMove(Board) : void
+    GetChainedMoves() : List<Move>
+}
+
+class MoveFactory {
+    {static} ForwardLeft(Board, Pawn)
+    {static} ForwardRight(Board, Pawn)
+    {static} EatForwardLeft(Board, Pawn)
+    {static} EatForwardRight(Board, Pawn)
+    {static} EatBackwardLeft(Board, Pawn)
+    {static} EatBackwardLeft(Board, Pawn)
 }
 
 

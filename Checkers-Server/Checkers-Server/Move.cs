@@ -14,6 +14,7 @@ namespace Checkers_Server
         Board board;
         Queue<IStep> steps;
         Stack<IStep> undoSteps;
+        Move chainedMove;
 
         public Move(Board board)
         {
@@ -45,6 +46,12 @@ namespace Checkers_Server
         public void AddStep(IStep step)
         {
             steps.Enqueue(step);
+        }
+
+        public List<Move> GetChainedMove()
+        {
+            //TODO: chained move
+            return null;
         }
     }
 
