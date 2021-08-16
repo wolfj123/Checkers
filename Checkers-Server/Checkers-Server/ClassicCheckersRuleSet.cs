@@ -12,7 +12,10 @@ namespace Checkers_Server
         public List<Move> GetAllMoves(IPlayer player, Board board)
         {
             var result = new List<Move>();
-            Color color = player.GetColor();
+            Color? color = player.GetColor();
+            if (color == null) {
+                return result;
+            }
             List<(Cell, Pawn)> cellsAndPawns = board.GetAllCellsAndPawns();
             cellsAndPawns.ForEach(cp => {
                 var cell = cp.Item1;

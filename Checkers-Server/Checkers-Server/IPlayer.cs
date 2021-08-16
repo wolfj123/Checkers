@@ -6,7 +6,9 @@ namespace Checkers_Server
 {
     public interface IPlayer
     {
-        Color GetColor();
+        Color? GetColor();
+
+        void SetColor(Color? color);
 
         void NotifyTurn();
 

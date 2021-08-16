@@ -13,6 +13,10 @@ namespace Checkers_Server
 
         public Board(int size)
         {
+            if(size <= 0)
+            {
+                throw new ArgumentException("size of board must be larger than 0");
+            }
             createCellMatrix(size);
             populateMatrixWithPawns();
         }

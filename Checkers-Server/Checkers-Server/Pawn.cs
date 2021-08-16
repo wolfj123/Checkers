@@ -38,8 +38,9 @@ namespace Checkers_Server
 
     public enum Color
     {
-        BLACK,
-        WHITE,
+        //NONE,
+        WHITE = 0,
+        BLACK = 1
     }
 
     public enum PawnType

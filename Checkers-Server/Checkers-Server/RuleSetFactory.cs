@@ -28,7 +28,7 @@ namespace Checkers_Server
 
         public static List<(string, string)> GetAllRuleSets()
         {
-            var result = rulesets.Select(tuple => (tuple.name, tuple.description)).ToList();
+            var result = rulesets.Map(tuple => (tuple.name, tuple.description)).ToList();
             return result;
         }
     }
