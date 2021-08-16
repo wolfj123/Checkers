@@ -31,7 +31,7 @@ namespace Checkers_Server
             return "TODO:";
         }
 
-        public IPlayer Winner(List<IPlayer> players, Board board)
+        public List<IPlayer> GetWinners(List<IPlayer> players, Board board)
         {
             //TODO: win conditions. take into account no more moves available (stalemate ?)
             throw new NotImplementedException();

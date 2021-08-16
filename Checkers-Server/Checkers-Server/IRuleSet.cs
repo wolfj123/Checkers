@@ -9,7 +9,7 @@ namespace Checkers_Server
         string GetGuide();
 
         ///<returns>Returns Null in case of no winner</returns>
-        IPlayer Winner(List<IPlayer> players, Board board);
+        List<IPlayer> GetWinners(List<IPlayer> players, Board board);
 
         List<Move> GetAllMoves(IPlayer player, Board board);
 

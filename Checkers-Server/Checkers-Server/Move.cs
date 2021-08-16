@@ -23,7 +23,7 @@ namespace Checkers_Server
             undoSteps = new Stack<IStep>();
         }
 
-        void DoMove()
+        public void DoMove()
         {
             for (int i = 0; i < steps.Count; i++)
             {
@@ -33,7 +33,7 @@ namespace Checkers_Server
             }
         }
 
-        void UndoMove()
+        public void UndoMove()
         {
             for (int i = 0; i < undoSteps.Count; i++)
             {

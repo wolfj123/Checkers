@@ -11,7 +11,7 @@ namespace Checkers_Server
         List<Cell> cellsList;
         int size;
 
-        Board(int size)
+        public Board(int size)
         {
             this.size = size;
             cellsArray = new Cell[size][];
