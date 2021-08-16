@@ -6,7 +6,8 @@ namespace Checkers_Server
 {
     public interface IRuleSet
     {
-        string GetGuide();
+        //string GetName();
+        //string GetDescription();
 
         ///<returns>Returns Null in case of no winner</returns>
         List<IPlayer> GetWinners(List<IPlayer> players, Board board);

@@ -13,6 +13,12 @@ namespace Checkers_Server
 
         public Board(int size)
         {
+            createCellMatrix(size);
+            populateMatrixWithPawns();
+        }
+
+        private void createCellMatrix(int size)
+        {
             this.size = size;
             cellsArray = new Cell[size][];
             for (int x = 0; x < size; x++)
@@ -25,6 +31,11 @@ namespace Checkers_Server
                     cellsList.Add(cellsArray[x][y]);
                 }
             }
+        }
+
+        private void populateMatrixWithPawns()
+        {
+            //TODO: add pawns
         }
 
         public Cell GetCell(int x, int y)

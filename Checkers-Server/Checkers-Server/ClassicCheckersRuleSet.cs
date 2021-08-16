@@ -6,6 +6,9 @@ namespace Checkers_Server
 {
     public class ClassicCheckersRuleSet : IRuleSet
     {
+        //string name = "Classic Checkers";
+        //string description = "TODO";
+
         public List<Move> GetAllMoves(IPlayer player, Board board)
         {
             var result = new List<Move>();
@@ -25,12 +28,6 @@ namespace Checkers_Server
             throw new NotImplementedException();
         }
 
-        public string GetGuide()
-        {
-            //TODO: guide for classic rules
-            return "TODO:";
-        }
-
         public List<IPlayer> GetWinners(List<IPlayer> players, Board board)
         {
             //TODO: win conditions. take into account no more moves available (stalemate ?)
@@ -40,13 +37,13 @@ namespace Checkers_Server
 
         public static Move AdvanceLeft(Board board, Pawn pawn)
         {
-            //TODO:
+            //TODO: advance left move
             return null;
         }
 
         public static Move AdvanceRight(Board board, Pawn pawn)
         {
-            //TODO:
+            //TODO: advance right move
             return null;
         }
     }

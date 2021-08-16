@@ -8,9 +8,9 @@ namespace Checkers_Server
     class GameMaster
     {
         //IPlayer currentPlayer;
+        //Stack<Move> moves;
         List<IPlayer> players;
         Board board;
-        Stack<Move> moves;
         IRuleSet ruleset;
         List<IPlayer> winners;
         private static GameMaster gamemaster;
@@ -34,13 +34,19 @@ namespace Checkers_Server
             return GetGameMaster();
         }
 
-        public void reset(List<IPlayer> players, int boardSize, string rules)
+        ///<exception cref="ArgumentException">This exception is thrown if the ruleset name is not a valid name</exception>
+        public void Reset(List<IPlayer> players, int boardSize, string rulesetName)
         {
             board = new Board(boardSize);
+            winners = new List<IPlayer>();
+            ruleset = RuleSetFactory.CreateRuleSet(rulesetName);
+            if(ruleset == null)
+            {
+                throw new ArgumentException(String.Format("Ruleset name is not valid: {0}", rulesetName));
+            }
             this.players = players;
-            //TODO: get createrulset
+            //TODO: randomze players 
         }
-
 
         public void notifyTurn()
         {
