@@ -23,6 +23,10 @@ namespace Checkers_Server
             return gamemaster;
         }
 
+        public static DirectionY GetDirectionByColor(Color color)
+        {
+            return color == Color.WHITE ? DirectionY.UP : DirectionY.DOWN;
+        }
         public static GameMaster GetGameMaster(List<IPlayer> players, int boardSize, string rules)
         {
             if(gamemaster == null)
@@ -100,7 +104,7 @@ namespace Checkers_Server
 
         public (Board, List<Move>) GetBoardAndMoves(IPlayer player)
         {
-            var moves = ruleset.GetAllMoves(player, board);
+            var moves = ruleset.GetAllMovesForPlayer(player, board);
             return (board, moves);
         }
 

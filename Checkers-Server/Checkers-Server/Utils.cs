@@ -27,4 +27,18 @@ namespace Checkers_Server
             return self.Where(predicate);
         }
     };
+
+    public static class ListExtentions
+    {
+        public static List<T> AddFluent<T>(this List<T> self, T item)
+        {
+            self.Add(item);
+            return self;
+        }
+
+        public static bool IsEmpty<T>(this List<T> self)
+        {
+            return self.Count == 0;
+        }
+    }
 }

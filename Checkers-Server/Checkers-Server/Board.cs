@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,11 @@ namespace Checkers_Server
 {
     public class Board
     {
+        static (DirectionX, DirectionY)[] directions = {
+            (DirectionX.RIGHT, DirectionY.UP),
+            (DirectionX.RIGHT, DirectionY.DOWN),
+            (DirectionX.LEFT, DirectionY.UP),
+            (DirectionX.LEFT, DirectionY.DOWN) };
         Cell[][] cellsArray;
         List<Cell> cellsList;
         int size;
@@ -52,25 +58,21 @@ namespace Checkers_Server
             return cellsList;
         }
 
+        public static (DirectionX, DirectionY)[] GetAllDirections()
+        {
+            return directions;
+            //return new List<(DirectionX, DirectionY)>()
+            //    .AddFluent((DirectionX.RIGHT, DirectionY.UP))
+            //    .AddFluent((DirectionX.RIGHT, DirectionY.DOWN))
+            //    .AddFluent((DirectionX.LEFT, DirectionY.UP))
+            //    .AddFluent((DirectionX.LEFT, DirectionY.DOWN));
+        }
+
         public List<Pawn> GetAllPawns()
         {
-            List<Pawn> result = cellsList.ConvertAll<Pawn>(cell => cell.GetPawn());
+            List<Pawn> result = cellsList.Map(cell => cell.GetPawn()).ToList();
             result.RemoveAll(pawn => pawn == null);
             return result;
-
-            //List<Pawn> result = new List<Pawn>();
-            //for (int x = 0; x < size; x++)
-            //{
-            //    for (int y = 0; y < size; y++)
-            //    {
-            //        Pawn currPawn = cells[x][y].GetPawn();
-            //        if(currPawn != null)
-            //        {
-            //            result.Add(currPawn);
-            //        }
-            //    }
-            //}
-            //return result;
         }
 
         public List<(Cell, Pawn)> GetAllCellsAndPawns()

@@ -10,20 +10,22 @@ namespace Checkers_Server
 
         public Color? GetColor()
         {
-            //TODO: HumanPlayer.GetColor
-            throw new NotImplementedException();
+            return color;
+        }
+
+        public void SetColor(Color? color)
+        {
+            this.color = color;
         }
 
         public void NotifyTurn()
         {
-            //TODO: HumanPlayer.NotifyTurn
-            throw new NotImplementedException();
+            //TODO: HumanPlayer notify turn
         }
 
         public void NotifyWinners(List<IPlayer> winners)
         {
-            //TODO: HumanPlayer.NotifyWinners
-            throw new NotImplementedException();
+            //HumanPlayer notify winners
         }
     }
 }

@@ -7,8 +7,10 @@ namespace Checkers_Server
     public class Cell
     {
         Pawn pawn;
-        int x;
-        int y;
+        public bool homebase { get; set; }
+
+        public int x { get; set; }
+        public int y { get; set; }
 
         public Cell(int x, int y)
         {
@@ -22,17 +24,14 @@ namespace Checkers_Server
             return pawn;
         }
 
+        public bool isEmpty()
+        {
+            return GetPawn() == null;
+        }
+
         public void SetPawn(Pawn pawn)
         {
-            //if (this.pawn != null && this.pawn.cell == this)
-            //{
-            //    pawn.cell = null;
-            //}
             this.pawn = pawn;
-            //if(this.pawn != null)
-            //{
-            //    pawn.cell = this;
-            //}
         }
     }
  

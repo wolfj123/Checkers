@@ -11,10 +11,10 @@ namespace Checkers_Server
     /// </summary>
     public class Move
     {
-        Board board;
-        Queue<IStep> steps;
-        Stack<IStep> undoSteps;
-        Move chainedMove;
+        protected Board board;
+        protected Queue<IStep> steps;
+        protected Stack<IStep> undoSteps;
+        protected List<Move> chainedMoves;
 
         public Move(Board board)
         {
@@ -43,15 +43,44 @@ namespace Checkers_Server
             }
         }
 
-        public void AddStep(IStep step)
+        /// <summary>
+        /// Add a step to a move.
+        /// <para>returns self to allow for Fluent Interface</para>
+        /// </summary>
+        /// <param name="step"></param>
+        /// <returns>self</returns>
+        public Move AddStep(IStep step)
         {
             steps.Enqueue(step);
+            return this;
         }
 
         public List<Move> GetChainedMove()
         {
-            //TODO: chained move
-            return null;
+            return chainedMoves;
+        }
+
+        public void SetChainedMove(List<Move> moves)
+        {
+            this.chainedMoves = moves;
+        }
+
+        public static Move AdvanceMove(Board board, Cell cell, Pawn pawn, DirectionX dx, DirectionY dy, int distance)
+        {
+            Move result = new Move(board)
+                .AddStep(new ChangePawnPositionStep(board, cell.x, cell.y, cell.x + (int)dx * distance, cell.y + (int)dx * distance));
+            return result;
+        }
+
+        public static Move EatMove(Board board, Cell cell, Pawn pawn, DirectionX dx, DirectionY dy)
+        {
+            var eatDistance = 2;
+            var enemyX = cell.x + (int)dx;
+            var enemyY = cell.y + (int)dy;
+            Move result = new Move(board)
+                .AddStep(new RemovePawnStep(board, enemyX, enemyY))
+                .AddStep(new ChangePawnPositionStep(board, cell.x, cell.y, cell.x + ((int)dx * eatDistance), cell.y + ((int)dx * eatDistance)));
+            return result;
         }
     }
 
@@ -122,6 +151,37 @@ namespace Checkers_Server
             board.AddPawn(pawn, x1, y1);
             pawn = null;
         }
+    }
+
+    public class UpgradeToQueen : IStep {
+        Pawn pawn;
+
+        public UpgradeToQueen(Pawn pawn)
+        {
+            this.pawn = pawn;
+        }
+
+        public void DoStep()
+        {
+            pawn.type = PawnType.QUEEN;
+        }
+
+        public void UndoStep()
+        {
+            pawn.type = PawnType.NORMAL;
+        }
+    }
+
+    public enum DirectionX
+    {
+        RIGHT = 1,
+        LEFT = -1,
+    }
+
+    public enum DirectionY
+    {
+        UP = 1 ,
+        DOWN = - 1,
     }
 }
 
