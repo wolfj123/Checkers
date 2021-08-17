@@ -7,8 +7,6 @@ namespace Checkers_Server
 {
     public class ClassicCheckersRuleSet : IRuleSet
     {
-        //string name = "Classic Checkers";
-        //string description = "TODO";
 
         public List<Move> GetAllMovesForPlayer(IPlayer player, Board board)
         {

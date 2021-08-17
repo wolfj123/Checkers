@@ -19,9 +19,13 @@ namespace Checkers_Server
 
         public Board(int size)
         {
-            if(size <= 0)
+            if(size <= 6)
             {
-                throw new ArgumentException("size of board must be larger than 0");
+                throw new ArgumentException("size of board must be larger than 6");
+            }
+            if(size % 2 != 0)
+            {
+                throw new ArgumentException("size of board must be an even number");
             }
             createCellMatrix(size);
             populateMatrixWithPawns();
@@ -41,9 +45,25 @@ namespace Checkers_Server
             };
         }
 
+        //TODO: maybe move to to ruleset?
         private void populateMatrixWithPawns()
         {
-            //TODO: add pawns
+            (int, int) linesToSkip = (size / 2, size / 2 + 1);
+            for (int x = 0; x < size; x++)
+            {
+                //var firstCellHasPawn = (x % 2 != 0);
+                for (int y = 0; y < size; y++)
+                {
+                    if (y == linesToSkip.Item1 || y == linesToSkip.Item2) {continue;}
+
+                    var cellHasPawn = ((x + y) % 2 != 0);
+                    var color = (y < linesToSkip.Item1) ? Color.WHITE : Color.BLACK;
+                    if (cellHasPawn)
+                    {
+                        cellsArray[x, y].SetPawn(new Pawn(color, PawnType.NORMAL));
+                    }
+                };
+            };
         }
 
         public Cell GetCell(int x, int y)
@@ -77,6 +97,23 @@ namespace Checkers_Server
                 result.Add((cell, cell.GetPawn()));
             });
             return result;
+        }
+
+        public Pawn ScanInDirection(int x, int y, (DirectionX x, DirectionY y) direction)
+        {
+            var currCell = GetCell(x + (int)direction.x, y + (int)direction.y);
+            while(currCell != null && currCell.isEmpty())
+            {
+                currCell = GetCell(currCell.x + (int)direction.x, currCell.y + (int)direction.y);
+            }
+            if(currCell == null)
+            {
+                return null;
+            }
+            else
+            {
+                return currCell.GetPawn();
+            }
         }
 
         ///<returns>Returns Null in case of no Pawn</returns>
