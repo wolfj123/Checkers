@@ -21,6 +21,7 @@ namespace Checkers_Server
             this.board = board;
             steps = new Queue<IStep>();
             undoSteps = new Stack<IStep>();
+            chainedMoves = new List<Move>();
         }
 
         public void DoMove()
@@ -60,9 +61,28 @@ namespace Checkers_Server
             return chainedMoves;
         }
 
-        public void SetChainedMove(List<Move> moves)
+        /// <summary>
+        /// Add a chained move to this move.
+        /// <para>returns self to allow for Fluent Interface</para>
+        /// </summary>
+        /// <param name="step"></param>
+        /// <returns>self</returns>
+        public Move AddChainedMove(Move move)
         {
-            this.chainedMoves = moves;
+            chainedMoves.Add(move);
+            return this;
+        }
+
+        /// <summary>
+        /// Add a chained move to this move.
+        /// <para>returns self to allow for Fluent Interface</para>
+        /// </summary>
+        /// <param name="step"></param>
+        /// <returns>self</returns>
+        public Move AddChainedMove(List<Move> moves)
+        {
+            chainedMoves.AddRange(moves);
+            return this;
         }
 
         public static Move AdvanceMove(Board board, Cell cell, Pawn pawn, DirectionX dx, DirectionY dy, int distance)

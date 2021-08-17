@@ -36,39 +36,6 @@ namespace Checkers_Server
 
             List<Move> result = new List<Move>();
 
-
-
-            if(nextLeftCell != null)
-            {
-                if(nextLeftCell.isEmpty()) //left cell is clear
-                {
-                    result.Add(Move.AdvanceMove(board, cell, pawn, DirectionX.LEFT, ydirection, 1));
-                }
-                else if(nextLeftCell.GetPawn().color != playerColor) //left cell has enemy
-                {
-                    List<Pawn> removedPawns = new List<Pawn>();
-                }
-            }
-
-
-
-
-            if(nextRightCell != null)
-            {
-                if (nextRightCell.isEmpty()) //right cell is clear
-                {
-                    result.Add(Move.AdvanceMove(board, cell, pawn, DirectionX.RIGHT, ydirection, 1));
-                }
-                else if (nextRightCell.GetPawn().color != playerColor) //
-                {
-
-                }
-            }
-
-
-
-
-
             return result;
         }
 
@@ -87,22 +54,24 @@ namespace Checkers_Server
             foreach ((DirectionX x, DirectionY y) direction in directions)
             {
                 var nextCell = board.GetCell(cell.x + (int)direction.x, cell.y + (int)direction.y);
-                if(nextCell == null) { continue; };
+                if (nextCell == null) { continue; };
+
                 var nextNextCell = board.GetCell(nextCell.x + (int)direction.x, nextCell.y + (int)direction.y);
                 if (nextNextCell == null) { continue; };
+
                 var adjacentPawn = nextCell.GetPawn();
                 var nextAdjacentPawn = nextNextCell.GetPawn();
-                if(adjacentPawn != null && adjacentPawn.color != pawn.color && !removedPawns.Contains(adjacentPawn)
+                if (adjacentPawn != null && adjacentPawn.color != pawn.color && !removedPawns.Contains(adjacentPawn)
                     && (nextAdjacentPawn == null || removedPawns.Contains(nextAdjacentPawn)))
                 {
                     var eatMove = Move.EatMove(board, cell, pawn, direction.x, direction.y);
                     List<Pawn> removedPawnsCopy = removedPawns.ToList().AddFluent(adjacentPawn);
-
-
+                    var chainedMoves = EatingSequence(board, nextNextCell, pawn, removedPawnsCopy);
+                    eatMove.AddChainedMove(chainedMoves);
                     result.Add(eatMove);
                 }
             }
-            
+            return result;
         }
         
 
