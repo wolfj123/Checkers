@@ -38,6 +38,7 @@ namespace Checkers_Server
         }
 
         //TODO: queen
+        //TODO: removes non-eating moves if it is possible to eat
         private List<Move> EatingSequence(Board board, Cell cell, Pawn pawn, List<Pawn> removedPawns)
         {
             (DirectionX x, DirectionY y)[] directions = Board.GetAllDirections();
@@ -73,13 +74,58 @@ namespace Checkers_Server
         }
         
 
+        //maybe add victory type to explain to players ?
 
         public List<IPlayer> GetWinners(List<IPlayer> players, Board board)
         {
-            //TODO: win conditions. take into account no more moves available (stalemate ?)
-            throw new NotImplementedException();
+            List<IPlayer> result = new List<IPlayer>();
+            var playerStatuses = new List<(IPlayer player, int numOfPawns, int numOfQueens, int numOfMoves)>();
+            var allPawns = board.GetAllPawns();
+
+            foreach (Color color in Enum.GetValues(typeof(Color)))
+            {
+                var player = players.First(p => p.GetColor() == color);
+                var pawns = allPawns.Filter(pawn => pawn.color == color);
+                var numOfPawns = pawns.Count(p => true);
+                var numOfQueens = pawns.Count(p => p.type == PawnType.QUEEN);
+                var numOfMoves = GetAllMovesForPlayer(player, board).Count;
+                playerStatuses.Add((player, numOfPawns, numOfQueens, numOfMoves));
+            }
+
+            if (playerStatuses.Count(ps => ps.numOfPawns == 0) == 1) //one player has no pawns
+            {
+                var winner = playerStatuses.First(ps => ps.numOfPawns > 0).player;
+                result.Add(winner);
+            }
+            else if (playerStatuses.Count(ps => ps.numOfMoves == 0) == 1) //one player has no moves
+            {
+                var winner = playerStatuses.First(ps => ps.numOfMoves > 0).player;
+                result.Add(winner);
+            }
+            else if (playerStatuses.Count(ps => ps.numOfMoves == 0) == 2) //both players have no moves
+            {
+                var maxPawns = playerStatuses.Max(ps => ps.numOfPawns);
+                if (playerStatuses.Count(ps => ps.numOfPawns == maxPawns) == 1) //one player has more pawns
+                {
+                    var winner = playerStatuses.First(ps => ps.numOfPawns == maxPawns).player;
+                    result.Add(winner);
+                }
+                else //both players have the same number of pawns
+                {
+                    var maxQueens = playerStatuses.Max(ps => ps.numOfQueens);
+                    if (playerStatuses.Count(ps => ps.numOfQueens == maxQueens) == 1) //one player has more queens
+                    {
+                        var winner = playerStatuses.First(ps => ps.numOfQueens == maxQueens).player;
+                        result.Add(winner);
+                    }
+                    else
+                    {
+                        result.AddRange(players); //stalemate
+                    }
+                }
+
+            }
+            return result;
         }
-
-
     }
 }
