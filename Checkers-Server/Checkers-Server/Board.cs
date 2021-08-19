@@ -45,7 +45,7 @@ namespace Checkers_Server
             };
         }
 
-        //TODO: maybe move to to ruleset?
+        //TODO: maybe move this method to ruleset?
         private void populateMatrixWithPawns()
         {
             (int, int) linesToSkip = (size / 2, size / 2 + 1);

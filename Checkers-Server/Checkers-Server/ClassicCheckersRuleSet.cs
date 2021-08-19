@@ -25,6 +25,7 @@ namespace Checkers_Server
             return result;
         }
 
+        //TODO: queen - can advance any distance
         public List<Move> GetAllMovesForPawn(Board board, Cell cell, Pawn pawn)
         {
             var playerColor = pawn.color;
@@ -32,13 +33,25 @@ namespace Checkers_Server
             var nextLeftCell = board.GetCell(cell.x + (int) DirectionX.LEFT, cell.y + (int)ydirection);
             var nextRightCell = board.GetCell(cell.x + (int)DirectionX.LEFT, cell.y + (int)ydirection);
 
-            List<Move> result = new List<Move>();
-
+            List<Move> result = EatingSequence(board, cell, pawn, new List<Pawn>());
+            if (result.IsEmpty()) //we only add normal movement if the pawn cannot eat - as eating is a must if possible
+            {
+                if(nextLeftCell != null && nextLeftCell.isEmpty())
+                {
+                    Move moveLeft = Move.AdvanceMove(board, cell, pawn, DirectionX.LEFT, ydirection, 1);
+                    result.Add(moveLeft);
+                }
+                if (nextRightCell != null && nextRightCell.isEmpty())
+                {
+                    Move moveRight = Move.AdvanceMove(board, cell, pawn, DirectionX.RIGHT, ydirection, 1);
+                    result.Add(moveRight);
+                }
+            }
             return result;
         }
 
-        //TODO: queen
-        //TODO: removes non-eating moves if it is possible to eat
+
+        //TODO: queen - can eat any distance
         private List<Move> EatingSequence(Board board, Cell cell, Pawn pawn, List<Pawn> removedPawns)
         {
             (DirectionX x, DirectionY y)[] directions = Board.GetAllDirections();
