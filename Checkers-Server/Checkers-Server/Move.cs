@@ -9,6 +9,8 @@ namespace Checkers_Server
     /// <para>Command design pattern:
     /// https://refactoring.guru/design-patterns/command </para>
     /// </summary>
+
+    //maybe add IDs / description, so that moves can be recognized by a user interface
     public class Move
     {
         protected Board board;

@@ -98,17 +98,43 @@ namespace Checkers_Server
             return result;
         }
 
+
+        //TODO: finish this... should driections be a list ?
+        private List<(Cell eatCell, Cell landingCell)> EatCells(Board board, Cell cell, Pawn pawn, (DirectionX x, DirectionY y)[] directions)
+        {
+            List<(Cell eatCell, Cell landingCell)> result = new List<(Cell eatCell, Cell landingCell)>();
+
+            foreach ((DirectionX x, DirectionY y) direction in directions)
+            {
+                Cell eatCell;
+                if (pawn.type == PawnType.NORMAL)
+                {
+                    eatCell = board.GetCell(cell.x + (int)direction.x, cell.y + (int)direction.y);
+                }
+                else
+                {
+                    eatCell = board.ScanInDirection(cell.x, cell.y, direction).occupiedCell;
+                }
+                if (eatCell == null) { continue; };
+
+                var landingCell = board.GetCell(eatCell.x + (int)direction.x, eatCell.y + (int)direction.y);
+                if (landingCell == null) { continue; };
+                result.Add((eatCell, landingCell));
+            }
+            return result;
+        }
+
         //TODO: queen - can eat any distance
         private List<Move> EatingSequence(Board board, Cell cell, Pawn pawn, List<Pawn> removedPawns)
         {
+            var result = new List<Move>();
+
             (DirectionX x, DirectionY y)[] directions = Board.GetAllDirections();
-            if (removedPawns.IsEmpty()) //first eat move, which is restricted to only forward direction
+            if (removedPawns.IsEmpty() && pawn.type == PawnType.NORMAL) //first eat move, which is restricted to only forward direction (if normal pawn)
             {
                 var forward = GameMaster.GetDirectionByColor(pawn.color);
                 directions = directions.Filter(d => d.y == forward).ToArray();
             }
-
-            var result = new List<Move>();
 
             foreach ((DirectionX x, DirectionY y) direction in directions)
             {
