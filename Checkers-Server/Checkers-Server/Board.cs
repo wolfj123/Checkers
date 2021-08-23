@@ -99,21 +99,28 @@ namespace Checkers_Server
             return result;
         }
 
-        public Pawn ScanInDirection(int x, int y, (DirectionX x, DirectionY y) direction)
+        public (List<Cell> emptyCells, Cell occupiedCell) ScanInDirection(int x, int y, (DirectionX x, DirectionY y) direction)
         {
+            var emptyCells = new List<Cell>();
+            Cell occupiedCell = null;
             var currCell = GetCell(x + (int)direction.x, y + (int)direction.y);
             while(currCell != null && currCell.isEmpty())
             {
+                emptyCells.Add(currCell);
                 currCell = GetCell(currCell.x + (int)direction.x, currCell.y + (int)direction.y);
             }
-            if(currCell == null)
-            {
-                return null;
-            }
-            else
-            {
-                return currCell.GetPawn();
-            }
+
+            occupiedCell = currCell;
+            //if(currCell == null)
+            //{
+            //    occupiedCell = null;
+            //}
+            //else
+            //{
+
+            //}
+
+            return (emptyCells, occupiedCell);
         }
 
         ///<returns>Returns Null in case of no Pawn</returns>

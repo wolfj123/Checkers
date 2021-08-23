@@ -25,31 +25,78 @@ namespace Checkers_Server
             return result;
         }
 
-        //TODO: queen - can advance any distance
         public List<Move> GetAllMovesForPawn(Board board, Cell cell, Pawn pawn)
         {
             var playerColor = pawn.color;
             var ydirection = playerColor == Color.WHITE ? DirectionY.UP : DirectionY.DOWN;
             var nextLeftCell = board.GetCell(cell.x + (int) DirectionX.LEFT, cell.y + (int)ydirection);
-            var nextRightCell = board.GetCell(cell.x + (int)DirectionX.LEFT, cell.y + (int)ydirection);
+            var nextRightCell = board.GetCell(cell.x + (int)DirectionX.RIGHT, cell.y + (int)ydirection);
 
             List<Move> result = EatingSequence(board, cell, pawn, new List<Pawn>());
+
+
             if (result.IsEmpty()) //we only add normal movement if the pawn cannot eat - as eating is a must if possible
             {
-                if(nextLeftCell != null && nextLeftCell.isEmpty())
-                {
-                    Move moveLeft = Move.AdvanceMove(board, cell, pawn, DirectionX.LEFT, ydirection, 1);
-                    result.Add(moveLeft);
-                }
-                if (nextRightCell != null && nextRightCell.isEmpty())
-                {
-                    Move moveRight = Move.AdvanceMove(board, cell, pawn, DirectionX.RIGHT, ydirection, 1);
-                    result.Add(moveRight);
-                }
+                result.AddRange(NormalMove(board, cell, pawn));
+
+                //if(nextLeftCell != null && nextLeftCell.isEmpty())
+                //{
+                //    Move moveLeft = Move.AdvanceMove(board, cell, pawn, DirectionX.LEFT, ydirection, 1);
+                //    result.Add(moveLeft);
+                //}
+                //if (nextRightCell != null && nextRightCell.isEmpty())
+                //{
+                //    Move moveRight = Move.AdvanceMove(board, cell, pawn, DirectionX.RIGHT, ydirection, 1);
+                //    result.Add(moveRight);
+                //}
             }
             return result;
         }
 
+        
+        private List<Move> NormalMove(Board board, Cell cell, Pawn pawn)
+        {
+            List<Move> result = new List<Move>();
+            List<Cell> MoveCells = new List<Cell>();
+            foreach (Cell mc in MoveCells)
+            {
+                var distance = Cell.Distance(cell, mc);
+                var move = Move.AdvanceMove(board,
+                                            cell,
+                                            pawn,
+                                            (DirectionX)(distance.dx / Math.Abs(distance.dx)),
+                                            (DirectionY)(distance.dy / Math.Abs(distance.dy)),
+                                            distance.dx);
+                result.Add(move);
+            }
+            return result;
+        }
+
+        private List<Cell> MoveCells(Board board, Cell cell, Pawn pawn)
+        {
+            List<Cell> result = new List<Cell>();
+
+            var playerColor = pawn.color;
+
+            if (pawn.type == PawnType.QUEEN)
+            {
+                var ydirection = playerColor == Color.WHITE ? DirectionY.UP : DirectionY.DOWN;
+                result.Add(
+                    board.GetCell(cell.x + (int)DirectionX.LEFT, cell.y + (int)ydirection));
+                result.Add(
+                    board.GetCell(cell.x + (int)DirectionX.RIGHT, cell.y + (int)ydirection));
+            }
+            else if(pawn.type == PawnType.QUEEN)
+            {
+                (DirectionX, DirectionY)[] allDirections = Board.GetAllDirections();
+                foreach ((DirectionX, DirectionY) dxdy in allDirections)
+                {
+                    result.AddRange(board.ScanInDirection(cell.x, cell.y, dxdy).emptyCells);
+                }
+            }
+
+            return result;
+        }
 
         //TODO: queen - can eat any distance
         private List<Move> EatingSequence(Board board, Cell cell, Pawn pawn, List<Pawn> removedPawns)

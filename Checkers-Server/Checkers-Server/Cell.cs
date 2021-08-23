@@ -33,6 +33,11 @@ namespace Checkers_Server
         {
             this.pawn = pawn;
         }
+
+        public static (int dx, int dy) Distance(Cell sourceCell, Cell targetCell)
+        {
+            return (targetCell.x - sourceCell.x, targetCell.y - sourceCell.y);
+        }
     }
  
 }
